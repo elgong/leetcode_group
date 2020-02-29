@@ -1,0 +1,47 @@
+package character;
+/**
+ * 其实就是找两个字符串的相同的字符有几个（最长公有子序列长为l），然后删去剩下的就是了
+ * 用各自的长度l1、l2 计算（l1+l2-2*l）
+ * 
+ * 关键点：怎么计算l
+ * dp：
+ * @author OrangeGirl
+ *
+ */
+public class minDistance583 {
+	public static void main(String[] args) {
+		System.out.println(minDistance("sea","eat"));
+	}
+    public static int minDistance(String word1, String word2) {
+    	int l1 = word1.length();
+    	int l2 = word2.length();
+    	/**
+    	 * 接下来找最长的公共子序列
+    	 * 用DP来找：
+    	 * 老三套：
+    	 * 1.缓存数组：dp[i][j] 含义：表示长为i的单词与长为j的单词的最长的公共子序列
+    	 * 2.递推关系：与dp[i-1][j-1]、dp[i][j-1]、dp[i-1][j]  的关系 当当前的word1[i-1]（第i个字符）和word2[j-1]（第j个字符）相等时，就直接+1
+    	 * 			1）word1[i-1]==word2[j-1]:dp[i][j] = dp[i-1][j-1] + 1;
+    	 * 			2）不等时  就顺承上一级（两个备选中选最大的）: dp[i][j] = max(dp[i][j-1],dp[i-1][j]);
+    	 * 3.初始状态：i=0、j=0 第一行和第一列全为0（因为有个单词没长度）
+    	 */
+    	int[][] dp = new int[word1.length()+1][word2.length()+1];//[0][0]表示两个word长为0 所以长度从一开始按照实际长度
+    	for(int j=0;j<=l2;j++) {
+    		dp[0][j] = 0;
+    	}// of for
+    	for(int i =0;i<=l1;i++) {
+    		dp[i][0] = 0;
+    	}//of for
+    	for (int i = 1; i <= l1; i++) {
+			for (int j = 1; j <= l2; j++) {
+				if(word1.charAt(i-1)==word2.charAt(j-1)) {
+	    			dp[i][j] = dp[i-1][j-1] + 1;
+	    		}else {
+	    			dp[i][j] = Math.max(dp[i][j-1],dp[i-1][j]);
+	    		}
+			}
+		}//of for	
+    	int l = dp[l1][l2];
+    	return l1+l2-2*l;
+    }
+}
