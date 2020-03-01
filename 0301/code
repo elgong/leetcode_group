@@ -1,0 +1,65 @@
+package StackAndQuene;
+
+import java.util.LinkedList;
+import java.util.Queue;
+
+/**
+ * 使用一个队列，让队头的出来加到队尾去
+ * @author OrangeGirl
+ *
+ */
+class MyStack {
+    private Queue<Integer> queue;
+    /** Initialize your data structure here. */
+    public MyStack() {
+    	queue = new LinkedList<>();
+    	
+    }
+    
+    /** Push element x onto stack. */
+    public void push(int x) {
+    	//其他操作和队列一样，不同就是在pop操作那里，所以这里加进去就完事儿
+    	queue.offer(x);
+    }
+    
+    /** Removes the element on top of the stack and returns that element. */
+    public int pop() {
+    	int size = queue.size();//要想让尾巴的先出去，就要让尾巴前面的添加到“尾巴”后面去 尾巴前面有size - 1个元素
+    	int i = 0;
+    	while(i<size-1) {
+    		queue.offer(queue.poll());
+            i++;
+    	}
+    	//已经调好了顺序，我要取得元素跑到了队头 接下来取出来就行了
+    	return queue.poll();
+    }
+    
+    /** Get the top element. */
+    public int top() {
+    	//和pop方法一样，多了一个保存操作
+    	int size = queue.size();//要想让尾巴的先出去，就要让尾巴前面的添加到“尾巴”后面去 尾巴前面有size - 1个元素
+    	int i = 0;
+    	while(i<size-1) {
+    		queue.offer(queue.poll());
+            i++;
+    	}
+    	//已经调好了顺序，我要取得元素跑到了队头 接下来取出来就行了
+    	int top = queue.poll();
+        queue.offer(top);
+    	return top;
+    }
+    
+    /** Returns whether the stack is empty. */
+    public boolean empty() {
+    	return queue.isEmpty();
+    }
+}
+
+/**
+ * Your MyStack object will be instantiated and called as such:
+ * MyStack obj = new MyStack();
+ * obj.push(x);
+ * int param_2 = obj.pop();
+ * int param_3 = obj.top();
+ * boolean param_4 = obj.empty();
+ */
