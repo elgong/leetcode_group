@@ -1,0 +1,40 @@
+package DP;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * 注意：并不是一定要一个一个石头的跳，是可以跨越的
+ * DP:
+ * 用哈希表K: value  k表示当前石头位置 value表示可以从某个地方跳过来需要的步数
+ * @author OrangeGirl
+ *
+ */
+public class canCross403 {
+    public boolean canCross(int[] stones) {
+    	HashMap<Integer,Set<Integer>> map = new HashMap<>();
+    	//先初始化：k为石头位置，value为空集合
+    	for(int i =0;i<stones.length;i++) {
+    		map.put(stones[i], new HashSet<Integer>());
+    	}
+    	//第一个的value集合为0 因为他上一步没有跳
+    	map.get(stones[0]).add(0);
+    	for(int i = 0;i<stones.length;i++) {
+    		for(int step:map.get(stones[i])) {
+    			for(int dis=step-1;dis<=step+1;dis++) {
+    				if(dis>0&&map.containsKey(stones[i]+dis)) {//当前位置+起跳步数
+    					map.get(stones[i]+dis).add(dis);
+    				}
+    			}
+    		}
+    	}//of for
+    	if(map.get(stones[stones.length-1]).size()>0) {
+    		return true;
+    	}else {
+    		return false;
+    	}
+    }
+
+	
+}
